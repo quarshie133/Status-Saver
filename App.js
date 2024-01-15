@@ -10,6 +10,9 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { useFonts } from "expo-font";
+
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 // Components
 import ImageView from "./screens/ImageView";
@@ -26,28 +29,61 @@ const Drawer = createDrawerNavigator();
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
 
 function Home() {
+  const [fontsLoaded] = useFonts({
+    KumbhSans: require("./assets/fonts/KumbhSans-SemiBold.ttf"),
+    Montserrat: require("./assets/fonts/Montserrat-Regular.ttf"),
+    Monts_Black: require("./assets/fonts/Montserrat-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarLabelStyle: { fontSize: 16, color: "#fff" },
+        tabBarItemStyle: { height: hp("7%"), top: "18%" },
+        tabBarLabelStyle: {
+          fontSize: 16,
+          fontFamily: "Montserrat",
+          color: "#fff",
+        },
         tabBarStyle: { backgroundColor: "#00693e" },
       }}
     >
       <Tab.Screen
         name="IMAGES"
         component={ImageView}
-        options={{ tabBarLabel: "IMAGES" }}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: () => (
+            <Ionicons name="camera-sharp" color="#fff" size={26} />
+          ),
+        }}
       />
       <Tab.Screen
         name="VIDEOS"
         component={VideoView}
-        options={{ tabBarLabel: "VIDEOS" }}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: () => (
+            <Ionicons name="videocam-sharp" color="#fff" size={26} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    KumbhSans: require("./assets/fonts/KumbhSans-SemiBold.ttf"),
+    Montserrat: require("./assets/fonts/Montserrat-Regular.ttf"),
+    Monts_Black: require("./assets/fonts/Montserrat-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -56,8 +92,12 @@ export default function App() {
           headerTitle: "",
           headerTintColor: "#fff",
           headerStyle: { backgroundColor: "#00693e" },
-          drawerPosition: "left",
           drawerType: "slide",
+          drawerLabelStyle: {
+            color: "#000",
+            fontSize: 16,
+            fontFamily: "Montserrat",
+          },
         }}
       >
         <Drawer.Screen name="Home" component={Home} />
